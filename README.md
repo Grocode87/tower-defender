@@ -22,3 +22,11 @@ A few examples of people who would benefit from this application:
 This project interests me because I am the exact person above, I really need a
 budgeting tool so I can better track my many expenses at university.
 
+## User Stories
+
+- As a user, I want to be able to set a monthly budget
+- As a user, I want to be able to specify parts of the monthly budget into categories
+- As a user, I want to be able to add an expense to a list of monthly expenses
+- As a user, I want to be able to edit/remove expenses from my monthly expenses
+- As a user, I want to be able to view how much I have spent in the current month
+
