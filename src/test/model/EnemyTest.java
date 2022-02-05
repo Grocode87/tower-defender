@@ -8,7 +8,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EnemyTest {
 
-    Grid grid = new Grid();
+    private static final int[][] mapLayout = {
+            {2,2,2,2,2,2,2,0,0,0},
+            {1,1,1,1,1,1,2,0,0,0},
+            {2,2,2,2,2,1,2,0,0,0},
+            {2,1,1,1,2,1,2,0,0,0},
+            {2,1,2,2,2,1,2,0,0,0},
+            {2,1,1,2,2,1,2,0,0,0},
+            {2,2,1,1,1,1,2,0,0,0},
+            {0,2,2,2,2,2,2,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0}};
+
+    Grid grid = new Grid(mapLayout);
     TDGame game = new TDGame(grid, 100);
     Position position = new Position(0, 1);
     Enemy e;
@@ -33,31 +46,40 @@ public class EnemyTest {
 
     @Test
     void testMoveInDirectionCantMoveRight() {
-        e.setPosition(new Position(8 * GridCell.WIDTH - 1, 1));
+        for (int i = 0; i < 8 * GridCell.WIDTH - 1; i++) {
+            e.move();
+        }
+
         assertFalse(e.moveInDirection(Direction.RIGHT));
     }
 
     @Test
     void testMoveChangeToDown() {
-        e.setPosition(new Position(8 * GridCell.WIDTH - 1, 1));
+        testMoveInDirectionCantMoveRight();
         e.move();
         assertEquals(e.getDirection(), Direction.DOWN);
-        e.move();
-        e.move();
-        e.move();
-        e.move();
-        assertEquals(e.getDirection(), Direction.LEFT);
-
     }
 
     @Test
     void testMoveChangeToLeft() {
-        e.setPosition(new Position(8 * GridCell.WIDTH - 1, 3 * GridCell.HEIGHT - 1));
-        e.move();
-        e.move();
-        e.move();
+        testMoveChangeToDown();
+        for (int i = 0; i <= 3 * GridCell.HEIGHT; i++) {
+            e.move();
+        }
         assertEquals(e.getDirection(), Direction.LEFT);
     }
+
+    /**
+    @Test
+    void testMoveChangeToUp() {
+        testMoveChangeToLeft();
+        for (int i = 0; i <= 6 * GridCell.WIDTH -1; i++) {
+            e.move();
+            System.out.println(e.getPosition().getPosX());
+        }
+        assertEquals(e.getDirection(), Direction.UP);
+    }
+     */
 
     @Test
     void testDamageColorChange() {

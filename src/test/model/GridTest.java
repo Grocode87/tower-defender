@@ -21,6 +21,9 @@ public class GridTest {
 
     @Test
     void testGetCellAtPosOutOfBounds() {
+        assertNull(g.getCellAtPos(new GridPosition(-1, 5)));
+        assertNull(g.getCellAtPos(new GridPosition(2, -1)));
+
         assertNull(g.getCellAtPos(new GridPosition(100, 5)));
         assertNull(g.getCellAtPos(new GridPosition(5, 100)));
     }

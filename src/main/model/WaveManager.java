@@ -5,8 +5,8 @@ import java.util.List;
 
 public class WaveManager {
     // Create waves
-    private static final int SECONDS_BETWEEN_WAVES = 5;
-    private static final int SECONDS_BETWEEN_ENEMIES = 1;
+    public static final int SECONDS_BETWEEN_WAVES = 5;
+    public static final int SECONDS_BETWEEN_ENEMIES = 1;
 
     public static final int BASE_ENEMIES = 2;
     public static final int NEW_ENEMIES_PER_WAVE = 3;
@@ -36,8 +36,8 @@ public class WaveManager {
         if (numEnemiesToSpawn == 0) {
             if (enemies.size() <= 0) {
                 if (timePassed >= (SECONDS_BETWEEN_WAVES * TDGame.TICKS_PER_SECOND)) {
-                    startNewWave();
                     timePassed = 0;
+                    startNewWave();
                 } else {
                     timePassed += 1;
                 }
@@ -56,7 +56,7 @@ public class WaveManager {
     public void startNewWave() {
         currWave += 1;
         System.out.println("Starting Wave: " + currWave);
-
+        timePassed = SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND;
         numEnemiesToSpawn = BASE_ENEMIES + ((currWave - 1) * NEW_ENEMIES_PER_WAVE);
     }
 
@@ -82,5 +82,15 @@ public class WaveManager {
 
     public List<Enemy> getEnemies() {
         return enemies;
+    }
+
+
+
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
+    public int getNumEnemiesToSpawn() {
+        return numEnemiesToSpawn;
     }
 }

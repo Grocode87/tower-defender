@@ -54,6 +54,10 @@ public class TDGame {
         }
     }
 
+    public void addMoney(int amount) {
+        this.money += amount;
+    }
+
     public WaveManager getWaveManager() {
         return waveManager;
     }
@@ -64,10 +68,6 @@ public class TDGame {
 
     public int getMoney() {
         return money;
-    }
-
-    public void addMoney(int amount) {
-        this.money += amount;
     }
 
 

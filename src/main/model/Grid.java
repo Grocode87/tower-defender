@@ -38,6 +38,14 @@ public class Grid {
         }
     }
 
+    public Grid(int[][] mapLayout) {
+        for (int i = 0; i < mapLayout.length; i++) {
+            for (int j = 0; j < mapLayout[i].length; j++) {
+                gridCells.add(new GridCell(mapLayout[i][j], new GridPosition(j, i)));
+            }
+        }
+    }
+
     public GridCell getCellAtPos(GridPosition pos) {
         if (pos.getGridX() >= 0 && pos.getGridX() < mapLayout[0].length) {
             if (pos.getGridY() >= 0 && pos.getGridY() < mapLayout.length) {

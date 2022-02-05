@@ -9,7 +9,7 @@ public class Tower {
     public static final int RANGE = 1;
     public static final int COST = 40;
 
-    private int ticksSinceFired = RELOAD_TIME_SECONDS * TDGame.TICKS_PER_SECOND - 5;
+    private int ticksSinceFired = RELOAD_TIME_SECONDS * TDGame.TICKS_PER_SECOND;
 
     private GridPosition gridPosition;
     private TDGame game;
@@ -56,5 +56,9 @@ public class Tower {
 
     public TextColor getColor() {
         return color;
+    }
+
+    public int getTicksSinceFired() {
+        return ticksSinceFired;
     }
 }
