@@ -10,19 +10,21 @@ public class TDGame {
 
     public static final int TICKS_PER_SECOND = 60;
     private boolean ended = false;
-    private Grid grid;
-    private List<Enemy> enemies = new ArrayList<>();
-    private List<Tower> towers = new ArrayList<>();
 
-    public TDGame(Grid grid) {
+    private Grid grid;
+    private List<Tower> towers = new ArrayList<>();
+    private WaveManager waveManager;
+
+    private int money;
+
+    public TDGame(Grid grid, int startMoney) {
         this.grid = new Grid();
-        this.enemies.add(new Enemy(new Position(0,1), "BAD GUY", this));
+        this.money = startMoney;
+        this.waveManager = new WaveManager(this);
     }
 
     public void tick() {
-        for (Enemy e : enemies) {
-            e.move();
-        }
+        this.waveManager.tick();
 
         for (Tower t : towers) {
             t.tick();
@@ -44,15 +46,29 @@ public class TDGame {
         }
 
         if (cell.getCellType() == Grid.TowerCell) {
-            this.towers.add(new Tower(gridPosition, this));
+            if (Tower.COST <= money) {
+                this.towers.add(new Tower(gridPosition, this));
+                this.money -= Tower.COST;
+                System.out.println("Remaining money: " + money);
+            }
         }
     }
 
-    public List<Enemy> getEnemies() {
-        return enemies;
+    public WaveManager getWaveManager() {
+        return waveManager;
     }
 
     public List<Tower> getTowers() {
         return towers;
     }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void addMoney(int amount) {
+        this.money += amount;
+    }
+
+
 }

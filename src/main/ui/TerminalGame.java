@@ -35,7 +35,7 @@ public class TerminalGame {
 
         TerminalSize terminalSize = screen.getTerminalSize();
 
-        game = new TDGame(new Grid());
+        game = new TDGame(new Grid(), 150);
 
         beginTicks();
     }
@@ -74,7 +74,7 @@ public class TerminalGame {
      * Sets the snake's direction corresponding to the
      * user's keystroke
      */
-    public void handleUserInput() throws IOException {
+    private void handleUserInput() throws IOException {
         KeyStroke stroke = screen.pollInput();
 
         if (stroke == null) {
@@ -88,7 +88,13 @@ public class TerminalGame {
                     break;
             }
         }
-        switch (stroke.getKeyType()) {
+
+        moveCursor(stroke.getKeyType());
+    }
+
+
+    private void moveCursor(KeyType keyType) {
+        switch (keyType) {
             case ArrowUp:
                 cursor.move(0, -1);
                 break;
@@ -124,6 +130,7 @@ public class TerminalGame {
         drawCursor();
         drawEnemies();
         drawTowers();
+        drawGUI();
     }
 
     private void drawEndScreen() {
@@ -154,7 +161,7 @@ public class TerminalGame {
     }
 
     private void drawEnemies() {
-        for (Enemy e : game.getEnemies()) {
+        for (Enemy e : game.getWaveManager().getEnemies()) {
             //drawGridPosition(e.getPosition().getGridPosition(), TextColor.ANSI.WHITE);
             drawPosition(e.getPosition(), GridCell.WIDTH, GridCell.HEIGHT, e.getColor());
         }
@@ -165,6 +172,15 @@ public class TerminalGame {
             drawGridPosition(t.getGridPosition(),
                     t.getColor());
         }
+    }
+
+    private void drawGUI() {
+        TextGraphics text = screen.newTextGraphics();
+        text.setForegroundColor(TextColor.ANSI.WHITE);
+
+
+
+        text.putString(0,1, game.getWaveManager().getWaveMessage() + "   |   Money: " + game.getMoney());
     }
 
     private void drawPosition(Position position, int width, int height, TextColor color) {

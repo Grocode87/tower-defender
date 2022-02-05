@@ -30,12 +30,5 @@ public enum Direction {
         );
     }
 
-    public GridPosition nextGridPosition(GridPosition pos) {
-        return new GridPosition(
-                pos.getGridX() + dx,
-                pos.getGridY() + dy
-        );
-    }
-
 
 }

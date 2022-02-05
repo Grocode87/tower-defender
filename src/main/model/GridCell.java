@@ -13,11 +13,12 @@ public class GridCell {
         this.gridPosition = gridPosition;
     }
 
-    public GridPosition getGridPosition() {
-        return gridPosition;
-    }
 
     public int getCellType() {
         return cellType;
+    }
+
+    public GridPosition getGridPosition() {
+        return gridPosition;
     }
 }
