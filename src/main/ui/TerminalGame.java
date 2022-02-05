@@ -22,6 +22,7 @@ public class TerminalGame {
     private TDGame game;
     private Screen screen;
     private WindowBasedTextGUI endGui;
+    private char square = '█';
 
     private GridPosition cursor = new GridPosition(0,0);
 
@@ -191,9 +192,9 @@ public class TerminalGame {
         for (int w = 0; w < width; w++) {
             for (int h = 0; h < height; h++) {
                 text.putString(
-                        (int)position.getPosX(),
-                        (int)position.getPosY() + 2,
-                        String.valueOf('\u2588'));
+                        (int) position.getPosX(),
+                        (int) position.getPosY() + 2,
+                        String.valueOf(square));
             }
         }
     }
@@ -208,7 +209,7 @@ public class TerminalGame {
                 text.putString(
                         gridPosition.getGridX() * GridCell.WIDTH + w,
                         gridPosition.getGridY() * GridCell.HEIGHT + h + 2,
-                        String.valueOf('\u2588'));
+                        String.valueOf(square));
             }
         }
 
