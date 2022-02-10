@@ -2,6 +2,9 @@ package model;
 
 import com.googlecode.lanterna.TextColor;
 
+/**
+ * Represents an individual tower in the game
+ */
 public class Tower {
 
     public static final int DAMAGE = 25;
@@ -20,16 +23,29 @@ public class Tower {
         this.game = game;
     }
 
+    /**
+     * REQUIRES: cellPosition to be a valid location on the Grid
+     * EFFECTS: returns true if the cellPosition is within RANGE number of grid cells in the x and y direction
+     */
     public boolean cellInRange(GridPosition cellPosition) {
         return ((Math.abs(cellPosition.getGridX() - gridPosition.getGridX()) <= RANGE)
                 && (Math.abs(cellPosition.getGridY() - gridPosition.getGridY()) <= RANGE));
     }
 
+    /**
+     * MODIFIES: this
+     * EFFECTS: Goes through every enemy in the waveManager,
+     *          If the enemy is within range:
+     *              damage the enemy
+     *              reset attack cooldown
+     *              set the tower color to white
+     */
     public boolean attack() {
         // Go through every enemy in game
         for (Enemy e : game.getWaveManager().getEnemies()) {
             if (cellInRange(e.getPosition().getGridPosition())) {
                 e.damage(DAMAGE);
+                ticksSinceFired = 0;
                 this.color = TextColor.ANSI.WHITE;
                 return true;
             }
@@ -38,13 +54,19 @@ public class Tower {
         return false;
     }
 
+    /**
+     * MODIFIES: this
+     * EFFECTS: Sets the color of the tower to blue,
+     *          checks if enough ticks have passed for the tower to be able to fire again
+     *              if yes, tower will attack
+     *              if no, number of ticks since last fired is increased by 1
+     *
+     */
     public void tick() {
         this.color = TextColor.ANSI.BLUE;
 
         if (ticksSinceFired >= RELOAD_TIME_SECONDS * TDGame.TICKS_PER_SECOND) {
-            if (attack()) {
-                ticksSinceFired = 0;
-            }
+            attack();
         } else {
             ticksSinceFired += 1;
         }

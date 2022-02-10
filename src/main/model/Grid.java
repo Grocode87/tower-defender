@@ -7,14 +7,13 @@ import java.util.List;
  * Represents the game grid
  * */
 public class Grid {
-    // layout of grid
-    // 0 - empty space
-    // 1 - path object
-    // 2 - can place tower
+
+    // 3 different types of cells
     public static final int EmptyCell = 0;
     public static final int PathCell = 1;
     public static final int TowerCell = 2;
-    
+
+    /**
     private static final int[][] mapLayout = {
             {2,2,2,2,2,2,2,2,2,0},
             {1,1,1,1,1,1,1,1,2,0},
@@ -27,6 +26,19 @@ public class Grid {
             {2,1,2,2,2,2,2,2,2,2},
             {2,1,1,1,1,1,1,1,1,1},
             {2,2,2,2,2,2,2,2,2,2}};
+*/
+    private static final int[][] mapLayout = {
+            {2,2,2,2,2,2,2,0,0,0},
+            {1,1,1,1,1,1,2,0,0,0},
+            {2,2,2,2,2,1,2,0,0,0},
+            {2,1,1,1,2,1,2,0,0,0},
+            {2,1,2,2,2,1,2,0,0,0},
+            {2,1,1,2,2,1,2,0,0,0},
+            {2,2,1,1,1,1,2,0,0,0},
+            {0,2,2,2,2,2,2,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0}};
     
     private final List<GridCell> gridCells = new ArrayList<>();
 
@@ -46,6 +58,10 @@ public class Grid {
         }
     }
 
+    /**
+     * EFFECTS: return the cell at a given grid position
+     *          if there is no cell at given position, return null
+     */
     public GridCell getCellAtPos(GridPosition pos) {
         if (pos.getGridX() >= 0 && pos.getGridX() < mapLayout[0].length) {
             if (pos.getGridY() >= 0 && pos.getGridY() < mapLayout.length) {

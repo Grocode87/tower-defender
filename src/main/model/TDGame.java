@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents the Tower Defense Game as a whole
+ * Represents the Tower Defense Game as a whole,
+ * contains the grid, the towers, the wave manager, and the player's assets
  */
 public class TDGame {
 
@@ -23,6 +24,9 @@ public class TDGame {
         this.waveManager = new WaveManager(this);
     }
 
+    /**
+     * EFFECTS: updates the waveManager and every tower
+     */
     public void tick() {
         this.waveManager.tick();
 
@@ -35,10 +39,16 @@ public class TDGame {
         return ended;
     }
 
+
     public Grid getGrid() {
         return grid;
     }
 
+    /**
+     * MODIFIES: this
+     * EFFECTS: Get the cell at the given GridPosition, if it is a tower cell,
+     *          place the tower at that position and remove the cost of the tower from the user's money
+     */
     public void placeTower(GridPosition gridPosition) {
         GridCell cell = this.grid.getCellAtPos(gridPosition);
         if (cell == null) {
@@ -54,6 +64,10 @@ public class TDGame {
         }
     }
 
+    /**
+     * MODIFIES: this
+     * EFFECTS: adds the amount the user's money
+     */
     public void addMoney(int amount) {
         this.money += amount;
     }

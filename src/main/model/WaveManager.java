@@ -3,8 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains the enemies currently on the screen and manages spawning of enemies for each wave
+ */
 public class WaveManager {
-    // Create waves
     public static final int SECONDS_BETWEEN_WAVES = 5;
     public static final int SECONDS_BETWEEN_ENEMIES = 1;
 
@@ -19,11 +21,19 @@ public class WaveManager {
 
     private int numEnemiesToSpawn = 0;
 
-
+    /**
+     * REQUIRES: game to be the active game object
+     * EFFECTS: Initialize the wave manager and set its game object
+     * MODIFIES: this
+     * */
     public WaveManager(TDGame game) {
         this.game = game;
     }
 
+    /**
+     * EFFECTS: moves every enemy that currently exists, and steps the wave forward
+     * MODIFIES: this
+     */
     public void tick() {
         for (Enemy e : enemies) {
             e.move();
@@ -32,6 +42,16 @@ public class WaveManager {
         stepWave();
     }
 
+    /**
+     * EFFECTS: - if the wave has no enemies left to spawn and there are no enemies left, it will start the between wave
+     *               state
+     *          - if the between wave state is active and enough time has passed, it will start a new wave
+     *          - if the wave has more enemies to spawn and the time between enemy spawns has been reached,
+     *               it will spawn another enemy
+     *
+     *          add 1 to timePassed
+     * MODIFIES: this
+     */
     public void stepWave() {
         if (numEnemiesToSpawn == 0) {
             if (enemies.size() <= 0) {
@@ -53,17 +73,33 @@ public class WaveManager {
         }
     }
 
+    /**
+     * REQUIRES: currWave >= 0
+     * MODIFIES: this
+     * EFFECTS: increase the currWave by 1, and set the number of enemies to spawn based on the current wave
+     */
     public void startNewWave() {
         currWave += 1;
-        System.out.println("Starting Wave: " + currWave);
+
         timePassed = SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND;
         numEnemiesToSpawn = BASE_ENEMIES + ((currWave - 1) * NEW_ENEMIES_PER_WAVE);
     }
 
+    /**
+     * MODIFIES: this
+     * EFFECTS: spawn a new enemy at the origin location on the map
+     */
     public void spawnEnemy() {
         enemies.add(new Enemy(new Position(0,1), "BAD GUY", this.game, Enemy.SPEED));
     }
 
+    /**
+     * REQUIRES: currWave >= 0
+     * EFFECTS: return a message to display about the current wave, 1 of 3 options:
+     *          - first wave has not started
+     *          - a wave is currently in progress
+     *          - currently between 2 waves
+     */
     public String getWaveMessage() {
         if (currWave == 0) {
             return "Place your first tower and get ready!";
@@ -76,6 +112,15 @@ public class WaveManager {
         }
     }
 
+    /**
+     * REQUIRES: enemies must have a reference to the same TDGame object as the wave manager
+     * MODIFIES: this
+     * EFFECTS: sets the enemies list to the passed in enemies list. HELPER FOR UNIT TESTS, not used in game
+     */
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
     public int getCurrWave() {
         return currWave;
     }
@@ -85,10 +130,6 @@ public class WaveManager {
     }
 
 
-
-    public void setEnemies(List<Enemy> enemies) {
-        this.enemies = enemies;
-    }
 
     public int getNumEnemiesToSpawn() {
         return numEnemiesToSpawn;

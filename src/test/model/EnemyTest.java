@@ -46,10 +46,10 @@ public class EnemyTest {
 
     @Test
     void testMoveInDirectionCantMoveRight() {
-        for (int i = 0; i < 8 * GridCell.WIDTH - 1; i++) {
+        for (int i = 0; i < 6 * GridCell.WIDTH; i++) {
             e.move();
         }
-
+        assertTrue(e.moveInCurrDirection());
         assertFalse(e.moveInDirection(Direction.RIGHT));
     }
 
@@ -63,23 +63,31 @@ public class EnemyTest {
     @Test
     void testMoveChangeToLeft() {
         testMoveChangeToDown();
-        for (int i = 0; i <= 3 * GridCell.HEIGHT; i++) {
+        for (int i = 0; i <= 3 * GridCell.HEIGHT - 1; i++) {
             e.move();
         }
         assertEquals(e.getDirection(), Direction.LEFT);
     }
 
-    /**
+
     @Test
     void testMoveChangeToUp() {
         testMoveChangeToLeft();
-        for (int i = 0; i <= 6 * GridCell.WIDTH -1; i++) {
+        for (int i = 0; i <= 5 * GridCell.WIDTH; i++) {
             e.move();
-            System.out.println(e.getPosition().getPosX());
         }
         assertEquals(e.getDirection(), Direction.UP);
     }
-     */
+
+    @Test
+    void testMoveChangeToRight() {
+        testMoveChangeToUp();
+        for (int i = 0; i <= 7 * GridCell.WIDTH; i++) {
+            e.move();
+        }
+
+        assertEquals(e.getDirection(), Direction.RIGHT);
+    }
 
     @Test
     void testDamageColorChange() {
