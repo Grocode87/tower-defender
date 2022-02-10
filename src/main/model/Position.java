@@ -19,8 +19,6 @@ public class Position {
      * EFFECTS: returns the grid position of the current x,y position
      */
     public GridPosition getGridPosition() {
-        System.out.println("current position: " + this.posX + ", " + this.posY);
-        System.out.println("current gridPosition: " + Math.round(this.posX / GridCell.WIDTH) + ", " + Math.round(this.posY / GridCell.HEIGHT));
         return new GridPosition(
                 ((int) this.posX / GridCell.WIDTH),
                 ((int) this.posY / GridCell.HEIGHT));
