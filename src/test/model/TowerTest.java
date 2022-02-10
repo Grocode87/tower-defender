@@ -20,6 +20,7 @@ public class TowerTest {
     void setup() {
         ArrayList<Enemy> testEnemies = new ArrayList<>();
         testEnemies.add(new Enemy(new Position(0,1), "Test", game2, 1));
+        testEnemies.add(new Enemy(new Position(1,1), "Test", game2, 1));
 
         game2.getWaveManager().setEnemies(testEnemies);
 
@@ -41,6 +42,16 @@ public class TowerTest {
     void testAttackNothingInRange() {
         assertFalse(t.attack());
     }
+
+    @Test
+    void testAttackEntityNotInRange() {
+        // move first enemy in game2 out of range
+        for (int i = 0; i < 2 * GridCell.WIDTH; i++) {
+            game2.getWaveManager().getEnemies().get(0).move();
+        }
+        assertTrue(t2.attack());
+    }
+
     @Test
     void testAttackEntityInRange() {
         assertTrue(t2.attack());

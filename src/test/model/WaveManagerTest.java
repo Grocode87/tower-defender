@@ -40,7 +40,7 @@ public class WaveManagerTest {
     }
 
     @Test
-    void testEnemySpawningPerWave() {
+    void testEnemySpawningPerWaveSpawnFirstEnemy() {
         for (int i = 0; i <= WaveManager.SECONDS_BETWEEN_WAVES * TDGame.TICKS_PER_SECOND; i++) {
             waveManager.stepWave();
         }
@@ -49,6 +49,15 @@ public class WaveManagerTest {
 
         assertEquals(waveManager.getNumEnemiesToSpawn(), WaveManager.BASE_ENEMIES - 1);
         assertEquals(waveManager.getEnemies().size(), 1);
+
+        for (int i = 0; i <= WaveManager.SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND; i++) {
+            waveManager.stepWave();
+        }
+    }
+
+    @Test
+    void testEnemySpawningPerWaveSpawnAllEnemies() {
+        testEnemySpawningPerWaveSpawnFirstEnemy();
 
         for (int i = 0; i <= WaveManager.SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND; i++) {
             waveManager.stepWave();
@@ -66,14 +75,21 @@ public class WaveManagerTest {
 
     @Test
     void testWaveMessageMiddleOfWave() {
-        testEnemySpawningPerWave();
+        testEnemySpawningPerWaveSpawnFirstEnemy();
+
+        assertEquals(waveManager.getWaveMessage(), "Wave 1");
+    }
+
+    @Test
+    void testWaveMessageMiddleOfWave2() {
+        testEnemySpawningPerWaveSpawnAllEnemies();
 
         assertEquals(waveManager.getWaveMessage(), "Wave 1");
     }
 
     @Test
     void testWaveMessageEndOfWave() {
-        testEnemySpawningPerWave();
+        testEnemySpawningPerWaveSpawnAllEnemies();
         waveManager.getEnemies().remove(1);
         waveManager.getEnemies().remove(0);
 
