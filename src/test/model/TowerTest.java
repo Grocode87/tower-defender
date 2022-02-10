@@ -20,7 +20,7 @@ public class TowerTest {
     void setup() {
         ArrayList<Enemy> testEnemies = new ArrayList<>();
         testEnemies.add(new Enemy(new Position(0,1), "Test", game2, 1));
-        testEnemies.add(new Enemy(new Position(1,1), "Test", game2, 1));
+        testEnemies.add(new Enemy(new Position(1,1), "Test 2", game2, 1));
 
         game2.getWaveManager().setEnemies(testEnemies);
 

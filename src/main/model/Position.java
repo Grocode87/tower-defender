@@ -9,6 +9,11 @@ public class Position {
     private double posX;
     private double posY;
 
+    /**
+     * REQUIRES: posX and posY must be valid pixel locations on the grid
+     * MODIFIES: this
+     * EFFECTS: creates a new Position object at the given x and y values
+     * */
     public Position(double posX, double posY) {
         this.posX = posX;
         this.posY = posY;

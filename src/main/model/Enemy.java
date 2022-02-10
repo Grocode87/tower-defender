@@ -19,6 +19,11 @@ public class Enemy {
     private TDGame game;
     private TextColor.RGB color = new TextColor.RGB(252, 215, 3);
 
+    /**
+     * REQUIRES: position needs to be on a path GridCell, game needs to be the one used by the UI, speed cannot be 0
+     * MODIFIES: this
+     * EFFECTS: Initializes a new enemy with its position, direction, name, game reference, health, and speed
+     */
     public Enemy(Position position, String name, TDGame game, double speed) {
         this.position = position;
         this.direction = Direction.RIGHT;

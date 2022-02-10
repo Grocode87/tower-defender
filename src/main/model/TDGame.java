@@ -18,8 +18,11 @@ public class TDGame {
 
     private int money;
 
+    /**
+     * REQUIRES: startMoney must be greater than 0
+     */
     public TDGame(Grid grid, int startMoney) {
-        this.grid = new Grid();
+        this.grid = grid;
         this.money = startMoney;
         this.waveManager = new WaveManager(this);
     }

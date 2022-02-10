@@ -14,6 +14,11 @@ public enum Direction {
     private int dx;
     private int dy;
 
+    /**
+     * REQUIRES: at least one of dx or dy needs to be 0, as the direction cannot be horizontal
+     * MODIFIES: this
+     * EFFECTS: initializes a new direction with its horizontal and vertical direction
+     */
     Direction(int dx, int dy) {
         this.dx = dx;
         this.dy = dy;

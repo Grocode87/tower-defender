@@ -11,6 +11,11 @@ public class GridCell {
     private GridPosition gridPosition;
 
 
+    /**
+     * REQUIRES: cellType must be either 0, 1, or 2
+     * MODIFIES: this
+     * EFFECTS: creates a new grid cell of the given type and at the given grid position
+     * */
     public GridCell(int cellType, GridPosition gridPosition) {
         this.cellType = cellType;
         this.gridPosition = gridPosition;

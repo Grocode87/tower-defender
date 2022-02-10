@@ -10,6 +10,11 @@ public class GridPosition {
     private int gridX;
     private int gridY;
 
+    /**
+     * REQUIRES: gridX and gridY must be valid locations on the Grid
+     * MODIFIES: this
+     * EFFECTS: creates a new GridPosition object at the given x and y values
+     * */
     public GridPosition(int gridX, int gridY) {
         this.gridX = gridX;
         this.gridY = gridY;
