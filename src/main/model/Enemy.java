@@ -59,10 +59,9 @@ public class Enemy {
      *          (can move in that direction if the next position is in a path cell)
      */
     public boolean moveInCurrDirection() {
-        GridCell nextCell = game.getGrid().getCellAtPos(this.direction.nextPosition(position, speed).getGridPosition());
+        GridCell nextCell = game.getGrid().getCellAtPos(direction.nextPosition(position, speed).getGridPosition());
 
         if (nextCell.getCellType() == Grid.PathCell) {
-            this.direction = direction;
             this.position = direction.nextPosition(this.position, speed);
             return true;
         }
@@ -78,17 +77,12 @@ public class Enemy {
      */
     public void move() {
         if (!moveInCurrDirection()) {
-            System.out.println("cant move in direction");
             if (direction == Direction.UP || direction == Direction.DOWN) {
-                System.out.println("currently up and down, trying left then right");
                 if (!moveInDirection(Direction.LEFT)) {
-                    System.out.println("left not work, going right");
                     moveInDirection(Direction.RIGHT);
                 }
             } else {
-                System.out.println("currently left or right, trying down then up");
                 if (!moveInDirection(Direction.DOWN)) {
-                    System.out.println("down not work, going up");
                     moveInDirection(Direction.UP);
                 }
             }

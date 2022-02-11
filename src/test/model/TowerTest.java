@@ -46,7 +46,7 @@ public class TowerTest {
     @Test
     void testAttackEntityNotInRange() {
         // move first enemy in game2 out of range
-        for (int i = 0; i < 2 * GridCell.WIDTH; i++) {
+        for (int i = 0; i < 4 * GridCell.WIDTH; i++) {
             game2.getWaveManager().getEnemies().get(0).move();
         }
         assertTrue(t2.attack());
