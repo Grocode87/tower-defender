@@ -13,9 +13,12 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
+import persistance.JsonReader;
+import persistance.JsonWriter;
 
 import javax.xml.soap.Text;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TerminalGame {
@@ -24,7 +27,10 @@ public class TerminalGame {
     private WindowBasedTextGUI endGui;
     private char square = '█';
 
-    private GridPosition cursor = new GridPosition(0,0);
+    private GridPosition cursor = new GridPosition(0, 0);
+
+    private JsonReader jsonReader = new JsonReader();
+    private JsonWriter jsonWriter = new JsonWriter();
 
     /**
      * Begins the game and method does not leave execution
@@ -86,6 +92,12 @@ public class TerminalGame {
             switch (stroke.getCharacter()) {
                 case 'p':
                     game.placeTower(new GridPosition(cursor.getGridX(), cursor.getGridY()));
+                    break;
+                case 's':
+                    saveGame();
+                    break;
+                case 'l':
+                    loadGame();
                     break;
             }
         }
@@ -180,8 +192,7 @@ public class TerminalGame {
         text.setForegroundColor(TextColor.ANSI.WHITE);
 
 
-
-        text.putString(0,1, game.getWaveManager().getWaveMessage() + "   |   Money: " + game.getMoney());
+        text.putString(0, 1, game.getWaveManager().getWaveMessage() + "   |   Money: " + game.getMoney());
     }
 
     private void drawPosition(Position position, int width, int height, TextColor color) {
@@ -212,9 +223,31 @@ public class TerminalGame {
                         String.valueOf(square));
             }
         }
-
-
     }
 
+    /**
+     * EFFECTS: Attempts to save the current game to file
+     */
+    private void saveGame() {
+        try {
+            jsonWriter.open("./data/gameStore.txt");
+            jsonWriter.write(game);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file");
+        }
+    }
 
+    /**
+     * EFFECTS: Attempts to set the game to a game loaded from file
+     * MODIFIES: this
+     */
+    private void loadGame() {
+        try {
+            this.game = jsonReader.read("./data/gameStore.txt");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file");
+            System.out.println("Unable to read from file");
+        }
+    }
 }

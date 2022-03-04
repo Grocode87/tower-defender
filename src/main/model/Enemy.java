@@ -1,11 +1,13 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
+import persistance.Saveable;
 
 /**
  * Represents an enemy in the game
  */
-public class Enemy {
+public class Enemy implements Saveable {
     public static final int MAX_HEALTH = 100;
     public static final double SPEED = 0.05;
     public static final int KILL_REWARD = 20;
@@ -18,6 +20,7 @@ public class Enemy {
 
     private TDGame game;
     private TextColor.RGB color = new TextColor.RGB(252, 215, 3);
+
 
     /**
      * REQUIRES: position needs to be on a path GridCell, game needs to be the one used by the UI, speed cannot be 0
@@ -131,4 +134,25 @@ public class Enemy {
         return color;
     }
 
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    // EFFECTS: Converts the Enemy to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("pos", position.toJson());
+        json.put("direction", direction.name());
+        json.put("health", health);
+        json.put("speed", speed);
+        json.put("name", name);
+        json.put("color", color.toString());
+
+        return json;
+    }
 }

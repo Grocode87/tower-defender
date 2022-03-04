@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Saveable;
+
 /**
  * Represents a specific cell on the grid
  */
@@ -29,4 +32,5 @@ public class GridCell {
     public GridPosition getGridPosition() {
         return gridPosition;
     }
+
 }

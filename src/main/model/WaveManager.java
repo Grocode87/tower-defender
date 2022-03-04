@@ -1,12 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistance.Saveable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Contains the enemies currently on the screen and manages spawning of enemies for each wave
  */
-public class WaveManager {
+public class WaveManager implements Saveable {
     public static final int SECONDS_BETWEEN_WAVES = 5;
     public static final int SECONDS_BETWEEN_ENEMIES = 1;
 
@@ -129,9 +133,37 @@ public class WaveManager {
         return enemies;
     }
 
+    public void setTimePassed(int timePassed) {
+        this.timePassed = timePassed;
+    }
 
+    public void setCurrWave(int currWave) {
+        this.currWave = currWave;
+    }
+
+    public void setNumEnemiesToSpawn(int numEnemiesToSpawn) {
+        this.numEnemiesToSpawn = numEnemiesToSpawn;
+    }
 
     public int getNumEnemiesToSpawn() {
         return numEnemiesToSpawn;
+    }
+
+    // EFFECTS: Converts the WaveManager to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("timePassed", timePassed);
+        json.put("currWave", currWave);
+        json.put("numEnemiesToSpawn", numEnemiesToSpawn);
+
+        JSONArray enemiesJson = new JSONArray();
+        for (Enemy e : enemies) {
+            enemiesJson.put(e.toJson());
+        }
+        json.put("enemies", enemiesJson);
+
+        return json;
     }
 }

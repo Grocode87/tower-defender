@@ -1,0 +1,10 @@
+{
+  "waveManager": {
+    "numEnemiesToSpawn": 0,
+    "timePassed": 77,
+    "enemies": [],
+    "currWave": 0
+  },
+  "money": 150,
+  "towers": []
+}

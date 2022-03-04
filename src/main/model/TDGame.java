@@ -1,5 +1,12 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistance.Saveable;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +14,7 @@ import java.util.List;
  * Represents the Tower Defense Game as a whole,
  * contains the grid, the towers, the wave manager, and the player's assets
  */
-public class TDGame {
+public class TDGame implements Saveable {
 
     public static final int TICKS_PER_SECOND = 60;
     private boolean ended = false;
@@ -25,6 +32,8 @@ public class TDGame {
         this.grid = grid;
         this.money = startMoney;
         this.waveManager = new WaveManager(this);
+
+
     }
 
     /**
@@ -67,6 +76,7 @@ public class TDGame {
         }
     }
 
+
     /**
      * MODIFIES: this
      * EFFECTS: adds the amount the user's money
@@ -87,5 +97,31 @@ public class TDGame {
         return money;
     }
 
+    public void setTowers(List<Tower> towers) {
+        this.towers = towers;
+    }
 
+    public void setWaveManager(WaveManager waveManager) {
+        this.waveManager = waveManager;
+    }
+
+    // EFFECTS: Converts the TDGame to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonGame = new JSONObject();
+        jsonGame.put("money", money);
+
+        // Add towers
+        JSONArray jsonTowers = new JSONArray();
+        for (Tower t : towers) {
+            jsonTowers.put(t.toJson());
+        }
+        jsonGame.put("towers", jsonTowers);
+
+        // Add WaveManager
+        JSONObject jsonWaveManager = waveManager.toJson();
+        jsonGame.put("waveManager", jsonWaveManager);
+
+        return jsonGame;
+    }
 }

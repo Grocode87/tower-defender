@@ -1,12 +1,15 @@
 package model;
 
 
+import org.json.JSONObject;
+import persistance.Saveable;
+
 /**
  * Represents a grid position on the grid.
  *
  * The gridX and gridY correlate to the grid position, not an exact x or y position
  */
-public class GridPosition {
+public class GridPosition implements Saveable {
     private int gridX;
     private int gridY;
 
@@ -43,5 +46,16 @@ public class GridPosition {
 
     public int getGridY() {
         return gridY;
+    }
+
+    // EFFECTS: Converts the GridPosition to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("gridX", gridX);
+        json.put("gridY", gridY);
+
+        return json;
     }
 }

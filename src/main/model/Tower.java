@@ -1,11 +1,13 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
+import persistance.Saveable;
 
 /**
  * Represents an individual tower in the game
  */
-public class Tower {
+public class Tower implements Saveable {
 
     public static final int DAMAGE = 25;
     public static final int RELOAD_TIME_SECONDS = 3;
@@ -82,5 +84,19 @@ public class Tower {
 
     public int getTicksSinceFired() {
         return ticksSinceFired;
+    }
+
+
+
+    // EFFECTS: Converts the Tower to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("gridPos", gridPosition.toJson());
+        json.put("color", color.toString());
+        json.put("ticksSinceFired", ticksSinceFired);
+
+        return json;
     }
 }

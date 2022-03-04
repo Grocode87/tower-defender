@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Saveable;
+
 /**
  * Represents a facing direction in game
  *
  * Based off code from the SnakeConsole example project
  */
-public enum Direction {
+public enum Direction implements Saveable {
     UP(0, -1),
     DOWN(0, 1),
     RIGHT(1, 0),
@@ -48,4 +51,14 @@ public enum Direction {
     }
 
 
+
+    // EFFECTS: Converts the Direction to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("direction", this.name());
+
+        return json;
+    }
 }

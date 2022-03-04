@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import persistance.Saveable;
+
 /**
  * Represents a position in the game space.
  *
  * THis is an exact x, y position and does not relate to the game grid.
  */
-public class Position {
+public class Position implements Saveable {
     private double posX;
     private double posY;
 
@@ -35,5 +38,16 @@ public class Position {
 
     public double getPosY() {
         return posY;
+    }
+
+    // EFFECTS: Converts the Position to a JSON Object and returns it
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("posX", posX);
+        json.put("posY", posY);
+
+        return json;
     }
 }

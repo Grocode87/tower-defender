@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,5 +35,13 @@ public class DirectionTest {
         assertEquals(up.nextPosition(position, 1).getPosY(), position.getPosY() - 1);
         assertEquals(down.nextPosition(position, 1).getPosY(), position.getPosY() + 1);
 
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject testObj = new JSONObject();
+        testObj.put("direction", up.name());
+
+        assertEquals(testObj.get("direction"), up.toJson().get("direction"));
     }
 }

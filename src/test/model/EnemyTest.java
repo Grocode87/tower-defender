@@ -1,6 +1,7 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -112,5 +113,15 @@ public class EnemyTest {
         e.damage(Enemy.MAX_HEALTH + 1);
         assertEquals(e.getHealth(), 0);
         assertEquals(game.getMoney(), 100 + Enemy.KILL_REWARD);
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject testObj = new JSONObject();
+        testObj.put("direction", e.getDirection());
+        testObj.put("pos", e.getPosition());
+        testObj.put("name", e.getName());
+
+        assertEquals(testObj.get("name"), e.toJson().get("name"));
     }
 }
