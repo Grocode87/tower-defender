@@ -230,7 +230,7 @@ public class TerminalGame {
      */
     private void saveGame() {
         try {
-            jsonWriter.open("./data/gameStore.txt");
+            jsonWriter.open("./data/gameStore.json");
             jsonWriter.write(game);
             jsonWriter.close();
         } catch (FileNotFoundException e) {
@@ -244,7 +244,7 @@ public class TerminalGame {
      */
     private void loadGame() {
         try {
-            this.game = jsonReader.read("./data/gameStore.txt");
+            this.game = jsonReader.read("./data/gameStore.json");
         } catch (IOException e) {
             System.out.println("Unable to read from file");
             System.out.println("Unable to read from file");

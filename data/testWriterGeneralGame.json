@@ -1,0 +1,50 @@
+{
+    "waveManager": {
+        "numEnemiesToSpawn": 0,
+        "timePassed": 0,
+        "enemies": [
+            {
+                "color": "{RGB:255,191,0}",
+                "pos": {
+                    "posX": 3.4499999999999957,
+                    "posY": 1
+                },
+                "name": "BAD GUY",
+                "health": 75,
+                "speed": 0.05,
+                "direction": "RIGHT"
+            },
+            {
+                "color": "{RGB:252,215,3}",
+                "pos": {
+                    "posX": 0.39999999999999997,
+                    "posY": 1
+                },
+                "name": "BAD GUY",
+                "health": 100,
+                "speed": 0.05,
+                "direction": "RIGHT"
+            }
+        ],
+        "currWave": 1
+    },
+    "money": 70,
+    "towers": [
+        {
+            "color": "BLUE",
+            "ticksSinceFired": 8,
+            "gridPos": {
+                "gridX": 2,
+                "gridY": 0
+            }
+        },
+        {
+            "color": "BLUE",
+            "ticksSinceFired": 180,
+            "gridPos": {
+                "gridX": 4,
+                "gridY": 0
+            }
+        }
+    ]
+}
