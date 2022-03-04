@@ -124,4 +124,23 @@ public class EnemyTest {
 
         assertEquals(testObj.get("name"), e.toJson().get("name"));
     }
+
+    @Test
+    void testSetDirectionDown() {
+        e.setDirection(Direction.DOWN);
+        assertEquals(Direction.DOWN, e.getDirection());
+    }
+
+
+    @Test
+    void testSetDirectionLeft() {
+        e.setDirection(Direction.LEFT);
+        assertEquals(Direction.LEFT, e.getDirection());
+    }
+
+    @Test
+    void testSetHealth() {
+        e.setHealth(69);
+        assertEquals(69, e.getHealth());
+    }
 }

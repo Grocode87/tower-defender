@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,5 +28,12 @@ public class GridPositionTest {
         gridPos.move(1, 1);
         assertEquals(gridPos.getGridX(), 2 + 1);
         assertEquals(gridPos.getGridY(), 2 + 1);
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject gridPosJson = gridPos.toJson();
+        assertEquals(2, gridPosJson.get("gridX"));
+        assertEquals(2, gridPosJson.get("gridY"));
     }
 }

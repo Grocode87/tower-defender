@@ -133,6 +133,10 @@ public class WaveManager implements Saveable {
         return enemies;
     }
 
+    public int getTimePassed() {
+        return timePassed;
+    }
+
     public void setTimePassed(int timePassed) {
         this.timePassed = timePassed;
     }

@@ -1,7 +1,11 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -83,6 +87,38 @@ public class TDGameTest {
     void testAddMoneyNegative() {
         game.addMoney(-10);
         assertEquals(game.getMoney(), 90);
+    }
+
+    @Test
+    void testSetTowers() {
+        ArrayList<Tower> testTowers = new ArrayList<Tower>();
+        GridPosition gridPos = new GridPosition(3, 4);
+        testTowers.add(new Tower(gridPos, game));
+
+        game.setTowers(testTowers);
+
+        assertEquals(gridPos, game.getTowers().get(0).getGridPosition());
+    }
+
+    @Test
+    void testSetWaveManager() {
+        WaveManager testWM = new WaveManager(game);
+        testWM.setCurrWave(4);
+
+        game.setWaveManager(testWM);
+
+        assertEquals(4, testWM.getCurrWave());
+    }
+
+    @Test
+    void testToJson() {
+        testPlaceTowerValidLocation();
+
+        JSONObject gameJson = game.toJson();
+        JSONArray towersJson = (JSONArray) game.toJson().get("towers");
+
+        assertEquals(1, towersJson.length());
+        assertEquals(60, gameJson.getInt("money"));
     }
 
 }

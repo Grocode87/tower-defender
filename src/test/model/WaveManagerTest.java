@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -94,5 +96,33 @@ public class WaveManagerTest {
         waveManager.getEnemies().remove(0);
 
         assertEquals(waveManager.getWaveMessage(), "Prepare for wave 2");
+    }
+
+    @Test
+    void testSetTimePassed() {
+        waveManager.setTimePassed(14);
+        assertEquals(14, waveManager.getTimePassed());
+    }
+
+    @Test
+    void testSetCurrWave() {
+        waveManager.setCurrWave(4);
+        assertEquals(4, waveManager.getCurrWave());
+    }
+
+    @Test
+    void testSetNumEnemiesToSpawn() {
+        waveManager.setNumEnemiesToSpawn(3);
+        assertEquals(3, waveManager.getNumEnemiesToSpawn());
+    }
+
+    @Test
+    void testToJson() {
+        testEnemySpawningPerWaveSpawnAllEnemies();
+        JSONObject waveManagerJson = waveManager.toJson();
+        JSONArray waveManagerEnemiesJson = waveManagerJson.getJSONArray("enemies");
+
+        assertEquals(1, waveManagerJson.get("currWave"));
+        assertEquals(2, waveManagerEnemiesJson.length());
     }
 }

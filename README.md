@@ -31,3 +31,5 @@ similar.
 - As a user, I want the game to get harder as time goes on
 - As a user, I want to make money to buy new towers every time one of my towers
   destroys an enemy
+- As a user, I want to be able save the current state of my game in a file
+- As a user, I want to be able to load in the saved state of the game from file
