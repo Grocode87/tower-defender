@@ -1,9 +1,14 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import model.grid.Grid;
+import model.grid.GridCell;
+import model.position.GridPosition;
+import model.position.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,8 +24,8 @@ public class TowerTest {
     @BeforeEach
     void setup() {
         ArrayList<Enemy> testEnemies = new ArrayList<>();
-        testEnemies.add(new Enemy(new Position(0,1), "Test", game2, 1));
-        testEnemies.add(new Enemy(new Position(1,1), "Test 2", game2, 1));
+        testEnemies.add(new Enemy(new Position(0,GridCell.HEIGHT + 1), "Test", game2, 1));
+        testEnemies.add(new Enemy(new Position(GridCell.WIDTH,GridCell.HEIGHT + 1), "Test 2", game2, 1));
 
         game2.getWaveManager().setEnemies(testEnemies);
 
@@ -54,24 +59,11 @@ public class TowerTest {
 
     @Test
     void testAttackEntityInRange() {
+        assertEquals(game2.getBullets().size(), 0);
+
         assertTrue(t2.attack());
 
-        assertEquals(game2.getWaveManager().getEnemies().get(0).getHealth(), Enemy.MAX_HEALTH - Tower.DAMAGE);
-    }
-
-    @Test
-    void testAttackColorChangeToWhite() {
-        t2.attack();
-        assertEquals(t2.getColor(), TextColor.ANSI.WHITE);
-    }
-
-    @Test
-    void testTickColorChangeBackToBlue() {
-        testAttackColorChangeToWhite();
-        t2.tick();
-        t2.tick();
-
-        assertEquals(t2.getColor(), TextColor.ANSI.BLUE);
+        assertEquals(game2.getBullets().size(), 1);
     }
 
     @Test
@@ -82,12 +74,11 @@ public class TowerTest {
         t2.tick();
         t2.tick();
 
-        assertEquals(t2.getTicksSinceFired(), 2);
+        assertEquals(2, t2.getTicksSinceFired());
     }
 
     @Test
     void testTickFireAfterReload() {
-
         t2.tick();
 
         for (int i = 0; i <= Tower.RELOAD_TIME_SECONDS * TDGame.TICKS_PER_SECOND; i++) {
@@ -101,5 +92,30 @@ public class TowerTest {
     void testGetGridPosition() {
         assertEquals(t.getGridPosition().getGridX(), 1);
         assertEquals(t.getGridPosition().getGridY(), 2);
+    }
+
+    @Test
+    void testUpgradeAtLevelZero() {
+        assertEquals(0, t.getLevel());
+        t.upgrade();
+        assertEquals(1, t.getLevel());
+    }
+    @Test
+    void testUpgradeAtLevelOne() {
+        testUpgradeAtLevelZero();
+
+        t.upgrade();
+        assertEquals(1, t.getLevel());
+    }
+
+    @Test
+    void testGetColorAtLevelZero() {
+        assertEquals(Color.blue, t.getColor());
+    }
+
+    @Test
+    void testGetColorAtLevelOne() {
+        testUpgradeAtLevelZero();
+        assertEquals(Color.pink, t.getColor());
     }
 }

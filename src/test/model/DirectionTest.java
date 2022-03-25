@@ -1,47 +1,33 @@
 package model;
 
-import org.json.JSONObject;
+import model.direction.Direction;
+import model.position.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Represents a direction in the game with a dx and dy - double values
+ */
 public class DirectionTest {
-    Direction up;
-    Direction down;
-    Direction left;
-    Direction right;
-
-    Position position;
+    Direction d;
 
     @BeforeEach
     void setup() {
-        up = Direction.UP;
-        down = Direction.DOWN;
-        left = Direction.LEFT;
-        right = Direction.RIGHT;
-
-        position = new Position(1.0, 1.0);
+        d = new Direction(0.5, 2.5);
     }
 
     @Test
-    void testNextPositionHorizontal() {
-        assertEquals(left.nextPosition(position, 1).getPosX(), position.getPosX() - 1);
-        assertEquals(right.nextPosition(position, 1).getPosX(), position.getPosX() + 1);
+    void testConstructor() {
+        assertEquals(0.5, d.getDx());
+        assertEquals(2.5, d.getDy());
     }
 
     @Test
-    void testNextPositionVertical() {
-        assertEquals(up.nextPosition(position, 1).getPosY(), position.getPosY() - 1);
-        assertEquals(down.nextPosition(position, 1).getPosY(), position.getPosY() + 1);
-
-    }
-
-    @Test
-    void testToJson() {
-        JSONObject testObj = new JSONObject();
-        testObj.put("direction", up.name());
-
-        assertEquals(testObj.get("direction"), up.toJson().get("direction"));
+    void testNextPosition() {
+        Position nextPos = d.nextPosition(new Position(1, 1), 2);
+        assertEquals(1 + (0.5 * 2), nextPos.getPosX());
+        assertEquals(1 + (2.5 * 2), nextPos.getPosY());
     }
 }

@@ -1,13 +1,12 @@
 package persistance;
 
-import model.Grid;
-import model.GridPosition;
+import model.grid.Grid;
+import model.position.GridPosition;
 import model.TDGame;
 import model.WaveManager;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;

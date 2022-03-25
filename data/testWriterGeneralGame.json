@@ -4,26 +4,26 @@
         "timePassed": 0,
         "enemies": [
             {
-                "color": "{RGB:255,191,0}",
+                "facingDirection": "DOWN",
+                "color": "java.awt.Color[r=255,g=255,b=0]",
                 "pos": {
-                    "posX": 3.4499999999999957,
-                    "posY": 1
-                },
-                "name": "BAD GUY",
-                "health": 75,
-                "speed": 0.05,
-                "direction": "RIGHT"
-            },
-            {
-                "color": "{RGB:252,215,3}",
-                "pos": {
-                    "posX": 0.39999999999999997,
-                    "posY": 1
+                    "posX": 48,
+                    "posY": 140
                 },
                 "name": "BAD GUY",
                 "health": 100,
-                "speed": 0.05,
-                "direction": "RIGHT"
+                "speed": 2
+            },
+            {
+                "facingDirection": "DOWN",
+                "color": "java.awt.Color[r=255,g=255,b=0]",
+                "pos": {
+                    "posX": 48,
+                    "posY": 58
+                },
+                "name": "BAD GUY",
+                "health": 100,
+                "speed": 2
             }
         ],
         "currWave": 1
@@ -31,20 +31,34 @@
     "money": 70,
     "towers": [
         {
-            "color": "BLUE",
-            "ticksSinceFired": 8,
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 49,
             "gridPos": {
                 "gridX": 2,
                 "gridY": 0
             }
         },
         {
-            "color": "BLUE",
-            "ticksSinceFired": 180,
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 60,
             "gridPos": {
                 "gridX": 4,
                 "gridY": 0
             }
         }
-    ]
+    ],
+    "bullets": [{
+        "pos": {
+            "posX": -283.2462425170447,
+            "posY": 255.84384154895028
+        },
+        "rotation": 2.5899376710612465,
+        "power": 25,
+        "direction": {
+            "dx": -2.554974950113632,
+            "dy": 1.5722922769930037
+        }
+    }]
 }

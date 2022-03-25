@@ -1,5 +1,8 @@
 package model;
 
+import model.grid.GridCell;
+import model.position.GridPosition;
+import model.position.Position;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistance.Saveable;
@@ -12,7 +15,7 @@ import java.util.List;
  */
 public class WaveManager implements Saveable {
     public static final int SECONDS_BETWEEN_WAVES = 5;
-    public static final int SECONDS_BETWEEN_ENEMIES = 1;
+    public static final int BASE_TICKETS_BETWEEN_ENEMIES = 40;
 
     public static final int BASE_ENEMIES = 2;
     public static final int NEW_ENEMIES_PER_WAVE = 3;
@@ -67,7 +70,9 @@ public class WaveManager implements Saveable {
                 }
             }
         } else {
-            if (timePassed >= (SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND)) {
+            int timeReduction = ((BASE_TICKETS_BETWEEN_ENEMIES * (currWave * currWave))
+                    / ((currWave * currWave) + BASE_TICKETS_BETWEEN_ENEMIES));
+            if (timePassed >= (BASE_TICKETS_BETWEEN_ENEMIES - timeReduction)) {
                 spawnEnemy();
                 timePassed = 0;
                 numEnemiesToSpawn -= 1;
@@ -85,7 +90,7 @@ public class WaveManager implements Saveable {
     public void startNewWave() {
         currWave += 1;
 
-        timePassed = SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND;
+        timePassed = BASE_TICKETS_BETWEEN_ENEMIES;
         numEnemiesToSpawn = BASE_ENEMIES + ((currWave - 1) * NEW_ENEMIES_PER_WAVE);
     }
 
@@ -94,7 +99,12 @@ public class WaveManager implements Saveable {
      * EFFECTS: spawn a new enemy at the origin location on the map
      */
     public void spawnEnemy() {
-        enemies.add(new Enemy(new Position(0,1), "BAD GUY", this.game, Enemy.SPEED));
+        GridPosition startGridPos = new GridPosition(0, 1);
+        System.out.println(startGridPos.getGridX());
+        System.out.println(startGridPos.getPosition().getPosX());
+        double startX = startGridPos.getPosition().getPosX();
+        double startY = (startGridPos.getPosition().getPosY() + GridCell.HEIGHT) / 2 + Enemy.RADIUS;
+        enemies.add(new Enemy(new Position(startX, startY), "BAD GUY", this.game, Enemy.SPEED));
     }
 
     /**

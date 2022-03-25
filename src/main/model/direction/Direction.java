@@ -1,5 +1,6 @@
-package model;
+package model.direction;
 
+import model.position.Position;
 import org.json.JSONObject;
 import persistance.Saveable;
 
@@ -8,23 +9,27 @@ import persistance.Saveable;
  *
  * Based off code from the SnakeConsole example project
  */
-public enum Direction implements Saveable {
-    UP(0, -1),
-    DOWN(0, 1),
-    RIGHT(1, 0),
-    LEFT(-1, 0);
+public class Direction implements Saveable {
 
-    private int dx;
-    private int dy;
+    private double dx;
+    private double dy;
 
     /**
      * REQUIRES: at least one of dx or dy needs to be 0, as the direction cannot be horizontal
      * MODIFIES: this
      * EFFECTS: initializes a new direction with its horizontal and vertical direction
      */
-    Direction(int dx, int dy) {
+    public Direction(double dx, double dy) {
         this.dx = dx;
         this.dy = dy;
+    }
+
+    public double getDx() {
+        return dx;
+    }
+
+    public double getDy() {
+        return dy;
     }
 
 
@@ -40,24 +45,14 @@ public enum Direction implements Saveable {
         );
     }
 
-    /**
-     * EFFECTS: applies the dx and dy to the passed in gridPosition
-     */
-    public GridPosition nextGridPosition(GridPosition gridPos) {
-        return new GridPosition(
-                gridPos.getGridX() + dx,
-                gridPos.getGridY() + dy
-        );
-    }
 
 
-
-    // EFFECTS: Converts the Direction to a JSON Object and returns it
+    // EFFECTS: Converts the FacingDirection to a JSON Object and returns it
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-
-        json.put("direction", this.name());
+        json.put("dx", dx);
+        json.put("dy", dy);
 
         return json;
     }

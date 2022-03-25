@@ -1,80 +1,39 @@
 {
     "waveManager": {
         "numEnemiesToSpawn": 0,
-        "timePassed": 0,
-        "enemies": [
-            {
-                "color": "{RGB:255,127,0}",
-                "pos": {
-                    "posX": 6.249999999999986,
-                    "posY": 5.999999999999987
-                },
-                "name": "BAD GUY",
-                "health": 50,
-                "speed": 0.05,
-                "direction": "RIGHT"
-            },
-            {
-                "color": "{RGB:252,215,3}",
-                "pos": {
-                    "posX": 6.8999999999999835,
-                    "posY": 3.999999999999994
-                },
-                "name": "BAD GUY",
-                "health": 100,
-                "speed": 0.05,
-                "direction": "LEFT"
-            },
-            {
-                "color": "{RGB:255,191,0}",
-                "pos": {
-                    "posX": 9.950000000000006,
-                    "posY": 3.999999999999994
-                },
-                "name": "BAD GUY",
-                "health": 75,
-                "speed": 0.05,
-                "direction": "LEFT"
-            },
-            {
-                "color": "{RGB:252,215,3}",
-                "pos": {
-                    "posX": 13.00000000000005,
-                    "posY": 3.999999999999994
-                },
-                "name": "BAD GUY",
-                "health": 100,
-                "speed": 0.05,
-                "direction": "LEFT"
-            }
-        ],
-        "currWave": 2
+        "timePassed": 236,
+        "enemies": [],
+        "currWave": 0
     },
-    "money": 90,
+    "money": 30,
     "towers": [
         {
-            "color": "BLUE",
-            "ticksSinceFired": 159,
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 60,
             "gridPos": {
-                "gridX": 6,
-                "gridY": 2
+                "gridX": 2,
+                "gridY": 3
             }
         },
         {
-            "color": "BLUE",
-            "ticksSinceFired": 102,
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 60,
             "gridPos": {
-                "gridX": 3,
-                "gridY": 4
+                "gridX": 4,
+                "gridY": 5
             }
         },
         {
-            "color": "BLUE",
-            "ticksSinceFired": 23,
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 60,
             "gridPos": {
-                "gridX": 3,
+                "gridX": 4,
                 "gridY": 6
             }
         }
-    ]
+    ],
+    "bullets": []
 }

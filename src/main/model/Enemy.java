@@ -1,35 +1,43 @@
 package model;
 
-import com.googlecode.lanterna.TextColor;
+import model.direction.FacingDirection;
+import model.grid.Grid;
+import model.grid.GridCell;
+import model.position.GridPosition;
+import model.position.Position;
 import org.json.JSONObject;
 import persistance.Saveable;
+
+import java.awt.*;
 
 /**
  * Represents an enemy in the game
  */
 public class Enemy implements Saveable {
     public static final int MAX_HEALTH = 100;
-    public static final double SPEED = 0.05;
+    public static final double SPEED = 2;
     public static final int KILL_REWARD = 20;
 
+    public static final int RADIUS = 10;
+
     private Position position;
-    private Direction direction;
+    private FacingDirection facingDirection;
     private int health;
     private double speed;
     private String name;
 
     private TDGame game;
-    private TextColor.RGB color = new TextColor.RGB(252, 215, 3);
+    private Color color = new Color(255, 255, 0);
 
 
     /**
      * REQUIRES: position needs to be on a path GridCell, game needs to be the one used by the UI, speed cannot be 0
      * MODIFIES: this
-     * EFFECTS: Initializes a new enemy with its position, direction, name, game reference, health, and speed
+     * EFFECTS: Initializes a new enemy with its position, facingDirection, name, game reference, health, and speed
      */
     public Enemy(Position position, String name, TDGame game, double speed) {
         this.position = position;
-        this.direction = Direction.RIGHT;
+        this.facingDirection = FacingDirection.RIGHT;
         this.name = name;
         this.game = game;
         this.health = MAX_HEALTH;
@@ -38,34 +46,51 @@ public class Enemy implements Saveable {
 
     /**
      * MODIFIES: this
-     * EFFECTS: moves the enemy in the direction that is passed in
-     *          returns true if the move is succesful, false if it cannot move in that direction
-     *          (can move in that direction if the next gridPosition is a path cell)
+     * EFFECTS: moves the enemy in the facingDirection that is passed in
+     *          returns true if the move is succesful, false if it cannot move in that facingDirection
+     *          (can move in that facingDirection if the next gridPosition is a path cell)
      */
-    public boolean moveInDirection(Direction moveDirection) {
+    public boolean moveInDirection(FacingDirection moveDirection) {
         GridPosition gridPos = position.getGridPosition();
 
         GridCell nextCell = this.game.getGrid().getCellAtPos(moveDirection.nextGridPosition(gridPos));
 
         if (nextCell.getCellType() == Grid.PathCell) {
-            this.direction = moveDirection;
-            this.position = direction.nextPosition(this.position, speed);
+            this.facingDirection = moveDirection;
+            this.position = facingDirection.nextPosition(this.position, speed);
             return true;
         }
         return false;
     }
 
+    // if move forward (see if currX + 1/2 grid cell + dx) is a path cell
+            // if not try down
     /**
      * MODIFIES: this
-     * EFFECTS: moves the enemy in the direction that it is currently facing
-     *          returns true if the move is succesful, false if it cannot move in that direction
-     *          (can move in that direction if the next position is in a path cell)
+     * EFFECTS: moves the enemy in the facingDirection that it is currently facing
+     *          returns true if the move is succesful, false if it cannot move in that facingDirection
+     *          (can move in that facingDirection if the next position is in a path cell)
      */
     public boolean moveInCurrDirection() {
-        GridCell nextCell = game.getGrid().getCellAtPos(direction.nextPosition(position, speed).getGridPosition());
+        Position nextPos = facingDirection.nextPosition(position, speed);
+
+        // Calculate the amounts to multiply the x and y offset by to get to the end of the current grid for a cell
+        // 1 if moving in positive facingDirection
+        // 0 if moving in negative facingDirection
+        int dirOffsetX = ((facingDirection.getDx() + 1) / 2);
+        int dirOffsetY = ((facingDirection.getDy() + 1) / 2);
+
+        // Calculate the amount to offset the position by get to the end of the cell if the current pos is in
+        // the center of the current square
+        int cellWidthOffsetX = ((GridCell.WIDTH / 2)) * dirOffsetX + (RADIUS * facingDirection.getDx());
+        int cellWidthOffsetY = ((GridCell.HEIGHT / 2)) * dirOffsetY + (RADIUS * facingDirection.getDy());
+
+        Position nextCellPos = new Position(nextPos.getPosX() + cellWidthOffsetX,
+                nextPos.getPosY() + cellWidthOffsetY);
+        GridCell nextCell = game.getGrid().getCellAtPos(nextCellPos.getGridPosition());
 
         if (nextCell.getCellType() == Grid.PathCell) {
-            this.position = direction.nextPosition(this.position, speed);
+            this.position = facingDirection.nextPosition(this.position, speed);
             return true;
         }
 
@@ -74,19 +99,19 @@ public class Enemy implements Saveable {
 
     /**
      * MODIFIES: this
-     * EFFECTS: either move in current direction or,
+     * EFFECTS: either move in current facingDirection or,
      *          if currently moving left or right: try to change to down or up and then move
      *          if currently moving up or down: try to change to left or right and then move
      */
     public void move() {
         if (!moveInCurrDirection()) {
-            if (direction == Direction.UP || direction == Direction.DOWN) {
-                if (!moveInDirection(Direction.LEFT)) {
-                    moveInDirection(Direction.RIGHT);
+            if (facingDirection == FacingDirection.UP || facingDirection == FacingDirection.DOWN) {
+                if (!moveInDirection(FacingDirection.LEFT)) {
+                    moveInDirection(FacingDirection.RIGHT);
                 }
             } else {
-                if (!moveInDirection(Direction.DOWN)) {
-                    moveInDirection(Direction.UP);
+                if (!moveInDirection(FacingDirection.DOWN)) {
+                    moveInDirection(FacingDirection.UP);
                 }
             }
         }
@@ -106,20 +131,19 @@ public class Enemy implements Saveable {
         if (health < 0) {
             health = 0;
         }
-        this.color = new TextColor.RGB(255, (255 * this.health) / MAX_HEALTH, 0);
+        this.color = new Color(255, (255 * this.health) / MAX_HEALTH, 0);
+    }
 
-        if (this.health <= 0) {
-            game.addMoney(Enemy.KILL_REWARD);
-            game.getWaveManager().getEnemies().remove(this);
-        }
+    public void kill() {
+        game.addMoney(Enemy.KILL_REWARD);
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public Direction getDirection() {
-        return direction;
+    public FacingDirection getDirection() {
+        return facingDirection;
     }
 
     public int getHealth() {
@@ -130,12 +154,16 @@ public class Enemy implements Saveable {
         return name;
     }
 
-    public TextColor.RGB getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setDirection(FacingDirection facingDirection) {
+        this.facingDirection = facingDirection;
     }
 
     public void setHealth(int health) {
@@ -147,7 +175,7 @@ public class Enemy implements Saveable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("pos", position.toJson());
-        json.put("direction", direction.name());
+        json.put("facingDirection", facingDirection.name());
         json.put("health", health);
         json.put("speed", speed);
         json.put("name", name);

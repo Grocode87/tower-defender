@@ -1,6 +1,11 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import model.direction.FacingDirection;
+import model.grid.Grid;
+import model.grid.GridCell;
+import model.position.GridPosition;
+import model.position.Position;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,70 +29,79 @@ public class EnemyTest {
 
     Grid grid = new Grid(mapLayout);
     TDGame game = new TDGame(grid, 100);
-    Position position = new Position(0, 1);
+    Position position;
     Enemy e;
 
     @BeforeEach
     void setup() {
+        GridPosition startGridPos = new GridPosition(0, 1);
+
+        double startX = startGridPos.getPosition().getPosX();
+        double startY = (startGridPos.getPosition().getPosY() + GridCell.HEIGHT) / 2 + Enemy.RADIUS;
+        System.out.println(startX);
+        position = new Position(startX, startY);
         e = new Enemy(position, "Test", game, 1);
+        e.setDirection(FacingDirection.RIGHT);
     }
 
     @Test
     void testConstructor() {
         assertEquals(e.getPosition(), position);
-        assertEquals(e.getDirection(), Direction.RIGHT);
+        assertEquals(e.getDirection(), FacingDirection.RIGHT);
         assertEquals(e.getName(), "Test");
         assertEquals(e.getHealth(), Enemy.MAX_HEALTH);
     }
 
     @Test
     void testMoveInDirectionCanMoveRight() {
-        assertTrue(e.moveInDirection(Direction.RIGHT));
+        assertTrue(e.moveInDirection(FacingDirection.RIGHT));
     }
 
     @Test
     void testMoveInDirectionCantMoveRight() {
-        for (int i = 0; i < 6 * GridCell.WIDTH; i++) {
+        for (int i = 0; i < (6 * GridCell.WIDTH); i++) {
             e.move();
         }
+
         assertTrue(e.moveInCurrDirection());
-        assertFalse(e.moveInDirection(Direction.RIGHT));
+        assertFalse(e.moveInDirection(FacingDirection.RIGHT));
     }
 
     @Test
     void testMoveChangeToDown() {
         testMoveInDirectionCantMoveRight();
         e.move();
-        assertEquals(e.getDirection(), Direction.DOWN);
+        e.move();
+        assertEquals(FacingDirection.DOWN, e.getDirection());
     }
 
     @Test
     void testMoveChangeToLeft() {
         testMoveChangeToDown();
-        for (int i = 0; i <= 3 * GridCell.HEIGHT - 1; i++) {
+        for (int i = 0; i <= 6 * GridCell.HEIGHT; i++) {
             e.move();
         }
-        assertEquals(e.getDirection(), Direction.LEFT);
+        assertEquals(FacingDirection.LEFT, e.getDirection());
     }
 
 
     @Test
     void testMoveChangeToUp() {
         testMoveChangeToLeft();
-        for (int i = 0; i <= 5 * GridCell.WIDTH; i++) {
+        for (int i = 0; i <= 2 * GridCell.WIDTH; i++) {
             e.move();
         }
-        assertEquals(e.getDirection(), Direction.UP);
+        assertEquals(e.getDirection(), FacingDirection.UP);
     }
 
     @Test
     void testMoveChangeToRight() {
         testMoveChangeToUp();
-        for (int i = 0; i <= 7 * GridCell.WIDTH; i++) {
+        for (int i = 0; i <= 9 * GridCell.WIDTH; i++) {
             e.move();
         }
 
-        assertEquals(e.getDirection(), Direction.RIGHT);
+        assertEquals(e.getDirection(), FacingDirection.RIGHT);
     }
 
     @Test
@@ -105,14 +119,19 @@ public class EnemyTest {
     void testDamageAll() {
         e.damage(Enemy.MAX_HEALTH);
         assertEquals(e.getHealth(), 0);
-        assertEquals(game.getMoney(), 100 + Enemy.KILL_REWARD);
     }
 
     @Test
     void testDamageMoreThanAll() {
         e.damage(Enemy.MAX_HEALTH + 1);
         assertEquals(e.getHealth(), 0);
-        assertEquals(game.getMoney(), 100 + Enemy.KILL_REWARD);
+    }
+
+    @Test
+    void testKill() {
+        int startMoney = game.getMoney();
+        e.kill();
+        assertEquals(startMoney + Enemy.KILL_REWARD, game.getMoney());
     }
 
     @Test
@@ -127,15 +146,15 @@ public class EnemyTest {
 
     @Test
     void testSetDirectionDown() {
-        e.setDirection(Direction.DOWN);
-        assertEquals(Direction.DOWN, e.getDirection());
+        e.setDirection(FacingDirection.DOWN);
+        assertEquals(FacingDirection.DOWN, e.getDirection());
     }
 
 
     @Test
     void testSetDirectionLeft() {
-        e.setDirection(Direction.LEFT);
-        assertEquals(Direction.LEFT, e.getDirection());
+        e.setDirection(FacingDirection.LEFT);
+        assertEquals(FacingDirection.LEFT, e.getDirection());
     }
 
     @Test

@@ -1,6 +1,7 @@
-package model;
+package model.position;
 
 
+import model.grid.GridCell;
 import org.json.JSONObject;
 import persistance.Saveable;
 

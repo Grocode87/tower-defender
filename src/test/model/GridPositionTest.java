@@ -1,5 +1,8 @@
 package model;
 
+import model.grid.GridCell;
+import model.position.GridPosition;
+import model.position.Position;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,17 @@
 package model;
 
+import javafx.geometry.Point2D;
+import javafx.scene.shape.Circle;
+import model.grid.Grid;
+import model.grid.GridCell;
+import model.position.GridPosition;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistance.Saveable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,6 +27,8 @@ public class TDGame implements Saveable {
     private List<Tower> towers = new ArrayList<>();
     private WaveManager waveManager;
 
+    private List<Bullet> bullets = new ArrayList<>();
+
     private int money;
 
     /**
@@ -32,8 +38,6 @@ public class TDGame implements Saveable {
         this.grid = grid;
         this.money = startMoney;
         this.waveManager = new WaveManager(this);
-
-
     }
 
     /**
@@ -45,12 +49,12 @@ public class TDGame implements Saveable {
         for (Tower t : towers) {
             t.tick();
         }
-    }
 
-    public boolean isEnded() {
-        return ended;
+        for (Bullet b: bullets) {
+            b.tick();
+        }
+        checkBulletCollision();
     }
-
 
     public Grid getGrid() {
         return grid;
@@ -71,7 +75,76 @@ public class TDGame implements Saveable {
             if (Tower.COST <= money) {
                 this.towers.add(new Tower(gridPosition, this));
                 this.money -= Tower.COST;
-                System.out.println("Remaining money: " + money);
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Remove the tower at the gridPosition and refund the money for the tower,
+    //          if there is no tower at gridPosition, do nothing
+    public void removeTower(GridPosition gridPosition) {
+        Iterator<Tower> towerIter = towers.iterator();
+        while (towerIter.hasNext()) {
+            Tower t = towerIter.next();
+            if (t.getGridPosition().getGridX() == gridPosition.getGridX()
+                    && t.getGridPosition().getGridY() == gridPosition.getGridY()) {
+                towerIter.remove();
+                this.money += Tower.COST;
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Upgrade the tower at the gridPosition if the player has enough money,
+    //           subtract the cost from the player's money
+    public void upgradeTower(GridPosition gridPosition) {
+        for (Tower t : towers) {
+            if (t.getGridPosition().getGridX() == gridPosition.getGridX()
+                    && t.getGridPosition().getGridY() == gridPosition.getGridY()) {
+                if (money >= Tower.UPGRADE_COST) {
+                    this.money -= Tower.UPGRADE_COST;
+                    t.upgrade();
+                }
+            }
+        }
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: Add the bullet to the game
+    public void addBullet(Bullet b) {
+        bullets.add(b);
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: for every enemy - checks enemy/bullet collisions
+    //            if collision: remove the bullet and damage the enemy, remove enemy if health <= 0
+    public void checkBulletCollision() {
+        Iterator<Enemy> enemyIter = waveManager.getEnemies().iterator();
+        while (enemyIter.hasNext()) {
+            Enemy e = enemyIter.next();
+            Iterator<Bullet> bulletIter = bullets.iterator();
+
+            while (bulletIter.hasNext()) {
+                Bullet b = bulletIter.next();
+
+                Circle enemyCircle = new Circle(e.getPosition().getPosX() + Enemy.RADIUS,
+                        e.getPosition().getPosY() + Enemy.RADIUS,
+                        Enemy.RADIUS);
+
+                Point2D point = new Point2D((int) b.getPos().getPosX() + (10 / 2),
+                        (int) b.getPos().getPosY() + (5 / 2));
+
+                if (enemyCircle.contains(point)) {
+                    bulletIter.remove();
+
+                    e.damage(b.getPower());
+                    if (e.getHealth() <= 0) {
+                        e.kill();
+                        enemyIter.remove();
+                    }
+                }
             }
         }
     }
@@ -95,6 +168,10 @@ public class TDGame implements Saveable {
 
     public int getMoney() {
         return money;
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
     }
 
     public void setTowers(List<Tower> towers) {
@@ -121,6 +198,13 @@ public class TDGame implements Saveable {
         // Add WaveManager
         JSONObject jsonWaveManager = waveManager.toJson();
         jsonGame.put("waveManager", jsonWaveManager);
+
+        // Add bullets
+        JSONArray jsonBullets = new JSONArray();
+        for (Bullet b : bullets) {
+            jsonBullets.put(b.toJson());
+        }
+        jsonGame.put("bullets", jsonBullets);
 
         return jsonGame;
     }

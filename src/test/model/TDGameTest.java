@@ -1,5 +1,7 @@
 package model;
 
+import model.grid.Grid;
+import model.position.GridPosition;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,12 @@ public class TDGameTest {
         grid = new Grid();
         game = new TDGame(grid, 100);
 
+    }
+
+    @Test
+    void testConstructor() {
+        assertEquals(grid, game.getGrid());
+        assertEquals(100, game.getMoney());
     }
 
     @Test
@@ -74,11 +82,6 @@ public class TDGameTest {
     }
 
     @Test
-    void testIsEnded() {
-        assertFalse(game.isEnded());
-    }
-
-    @Test
     void testAddMoneyPositive() {
         game.addMoney(10);
         assertEquals(game.getMoney(), 110);
@@ -120,5 +123,71 @@ public class TDGameTest {
         assertEquals(1, towersJson.length());
         assertEquals(60, gameJson.getInt("money"));
     }
+
+    @Test
+    void testRemoveTowerExists() {
+        game.placeTower(new GridPosition(1, 0));
+        game.placeTower(new GridPosition(2, 0));
+        assertEquals(2, game.getTowers().size());
+        assertEquals(20, game.getMoney());
+
+        game.removeTower(new GridPosition(1, 0));
+        assertEquals(1, game.getTowers().size());
+        assertEquals(60, game.getMoney());
+    }
+
+    @Test
+    void testRemoveTowerDoesNotExistAtXandY() {
+        game.addMoney(Tower.COST * 3);
+        game.placeTower(new GridPosition(1, 0));
+        game.placeTower(new GridPosition(2, 0));
+
+        game.removeTower(new GridPosition(3, 3));
+        game.removeTower(new GridPosition(3, 0));
+        game.removeTower(new GridPosition(1, 3));
+        assertEquals(2, game.getTowers().size());
+    }
+
+    @Test
+    void testUpgradeTowerEnoughMoney() {
+        game.placeTower(new GridPosition(1, 0));
+        game.placeTower(new GridPosition(2, 0));
+
+        int leftOverMoney = game.getMoney();
+        game.addMoney(Tower.UPGRADE_COST);
+        game.upgradeTower(new GridPosition(1, 0));
+
+        assertEquals(1, game.getTowers().get(0).getLevel());
+        assertEquals(leftOverMoney, game.getMoney());
+    }
+
+    @Test
+    void testUpgradeTowerNotEnoughMoney() {
+        game.placeTower(new GridPosition(1, 0));
+        int leftOverMoney = game.getMoney();
+        game.upgradeTower(new GridPosition(1, 0));
+
+        assertEquals(0, game.getTowers().get(0).getLevel());
+        assertEquals(leftOverMoney, game.getMoney());
+    }
+
+    @Test
+    void testUpgradeTowerInvalidLocations() {
+        game.addMoney(Tower.COST * 3);
+        game.placeTower(new GridPosition(1, 0));
+        game.placeTower(new GridPosition(2, 0));
+        game.placeTower(new GridPosition(3, 0));
+
+        game.upgradeTower(new GridPosition(1, 5));
+        game.upgradeTower(new GridPosition(5, 0));
+        game.upgradeTower(new GridPosition(5, 5));
+
+        assertEquals(0, game.getTowers().get(0).getLevel());
+        assertEquals(0, game.getTowers().get(1).getLevel());
+        assertEquals(0, game.getTowers().get(2).getLevel());
+    }
+
+
+
 
 }

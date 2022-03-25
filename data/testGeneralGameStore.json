@@ -12,7 +12,7 @@
                 "name": "BAD GUY",
                 "health": 50,
                 "speed": 0.05,
-                "direction": "RIGHT"
+                "facingDirection": "RIGHT"
             },
             {
                 "color": "{RGB:252,215,3}",
@@ -23,7 +23,7 @@
                 "name": "BAD GUY",
                 "health": 100,
                 "speed": 0.05,
-                "direction": "LEFT"
+                "facingDirection": "LEFT"
             },
             {
                 "color": "{RGB:255,191,0}",
@@ -34,7 +34,7 @@
                 "name": "BAD GUY",
                 "health": 75,
                 "speed": 0.05,
-                "direction": "LEFT"
+                "facingDirection": "LEFT"
             },
             {
                 "color": "{RGB:252,215,3}",
@@ -45,7 +45,7 @@
                 "name": "BAD GUY",
                 "health": 100,
                 "speed": 0.05,
-                "direction": "LEFT"
+                "facingDirection": "LEFT"
             }
         ],
         "currWave": 2

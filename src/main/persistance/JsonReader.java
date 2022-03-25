@@ -1,9 +1,13 @@
 package persistance;
 
 import model.*;
+import model.direction.Direction;
+import model.direction.FacingDirection;
+import model.grid.Grid;
+import model.position.GridPosition;
+import model.position.Position;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ui.Main;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -45,7 +49,7 @@ public class JsonReader {
         TDGame game = new TDGame(new Grid(), jsonObject.getInt("money"));
         addTowers(game, jsonObject);
         addWaveManager(game, jsonObject.getJSONObject("waveManager"));
-
+        addBullets(game, jsonObject.getJSONArray("bullets"));
         return game;
     }
 
@@ -61,7 +65,10 @@ public class JsonReader {
             GridPosition towerGridPos = new GridPosition(towerPosJson.getInt("gridX"),
                     towerPosJson.getInt("gridY"));
 
-            newTowers.add(new Tower(towerGridPos, game));
+            Tower newTower = new Tower(towerGridPos, game);
+            newTower.setLevel(towerJson.getInt("level"));
+
+            newTowers.add(newTower);
         }
 
         game.setTowers(newTowers);
@@ -85,11 +92,25 @@ public class JsonReader {
 
             Enemy newEnemy = new Enemy(enemyGridPos, enemyJson.getString("name"), game,
                     enemyJson.getDouble("speed"));
-            newEnemy.setDirection(Direction.valueOf(enemyJson.getString("direction")));
+            newEnemy.setDirection(FacingDirection.valueOf(enemyJson.getString("facingDirection")));
             newEnemy.setHealth(enemyJson.getInt("health"));
             newEnemies.add(newEnemy);
         }
         wm.setEnemies(newEnemies);
         game.setWaveManager(wm);
+    }
+
+    public void addBullets(TDGame game, JSONArray jsonArray) {
+        for (Object json : jsonArray) {
+            JSONObject bulletJson = (JSONObject) json;
+            JSONObject bulletPos = (JSONObject) bulletJson.getJSONObject("pos");
+            JSONObject bulletDir = (JSONObject) bulletJson.getJSONObject("direction");
+            Position pos = new Position(bulletPos.getDouble("posX"), bulletPos.getDouble("posY"));
+            Direction dir = new Direction(bulletDir.getDouble("dx"), bulletDir.getDouble("dx"));
+
+            Bullet newBullet = new Bullet(pos, dir, bulletJson.getDouble("rotation"),
+                    bulletJson.getInt("power"));
+            game.addBullet(newBullet);
+        }
     }
 }

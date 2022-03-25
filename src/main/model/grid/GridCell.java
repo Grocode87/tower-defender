@@ -1,14 +1,13 @@
-package model;
+package model.grid;
 
-import org.json.JSONObject;
-import persistance.Saveable;
+import model.position.GridPosition;
 
 /**
  * Represents a specific cell on the grid
  */
 public class GridCell {
-    public static final int WIDTH = 3;
-    public static final int HEIGHT = 1;
+    public static final int WIDTH = 40;
+    public static final int HEIGHT = 40;
 
     private int cellType;
     private GridPosition gridPosition;

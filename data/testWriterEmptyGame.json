@@ -6,5 +6,6 @@
         "currWave": 0
     },
     "money": 150,
-    "towers": []
+    "towers": [],
+    "bullets": []
 }

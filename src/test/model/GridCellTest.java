@@ -1,5 +1,7 @@
 package model;
 
+import model.grid.GridCell;
+import model.position.GridPosition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

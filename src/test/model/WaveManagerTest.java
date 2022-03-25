@@ -1,5 +1,8 @@
 package model;
 
+import model.grid.Grid;
+import model.grid.GridCell;
+import model.position.Position;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +26,12 @@ public class WaveManagerTest {
     @Test
     void testTickMoveEntities() {
         ArrayList<Enemy> testEnemies = new ArrayList<>();
-        testEnemies.add(new Enemy(new Position(0,1), "Test", game, 1));
+        testEnemies.add(new Enemy(new Position(0, GridCell.HEIGHT + 1), "Test", game, 1));
 
         waveManager.setEnemies(testEnemies);
 
         waveManager.tick();
-        assertEquals(waveManager.getEnemies().get(0).getPosition().getPosX(), 1);
+        assertEquals(1, waveManager.getEnemies().get(0).getPosition().getPosX());
     }
     
     @Test
@@ -52,7 +55,7 @@ public class WaveManagerTest {
         assertEquals(waveManager.getNumEnemiesToSpawn(), WaveManager.BASE_ENEMIES - 1);
         assertEquals(waveManager.getEnemies().size(), 1);
 
-        for (int i = 0; i <= WaveManager.SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND; i++) {
+        for (int i = 0; i <= WaveManager.BASE_TICKETS_BETWEEN_ENEMIES; i++) {
             waveManager.stepWave();
         }
     }
@@ -61,7 +64,7 @@ public class WaveManagerTest {
     void testEnemySpawningPerWaveSpawnAllEnemies() {
         testEnemySpawningPerWaveSpawnFirstEnemy();
 
-        for (int i = 0; i <= WaveManager.SECONDS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND; i++) {
+        for (int i = 0; i <= WaveManager.BASE_TICKETS_BETWEEN_ENEMIES * TDGame.TICKS_PER_SECOND; i++) {
             waveManager.stepWave();
         }
 

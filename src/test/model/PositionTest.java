@@ -1,5 +1,7 @@
 package model;
 
+import model.grid.GridCell;
+import model.position.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +13,13 @@ public class PositionTest {
 
     @BeforeEach
     void setup() {
-        p = new Position(1, 1);
+        p = new Position(1, GridCell.HEIGHT + 2);
     }
 
     @Test
     void testConstructor() {
         assertEquals(p.getPosX(), 1);
-        assertEquals(p.getPosY(), 1);
+        assertEquals(p.getPosY(), GridCell.HEIGHT + 2);
     }
 
     @Test
