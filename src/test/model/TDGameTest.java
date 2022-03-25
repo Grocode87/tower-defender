@@ -1,7 +1,9 @@
 package model;
 
+import model.direction.Direction;
 import model.grid.Grid;
 import model.position.GridPosition;
+import model.position.Position;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -125,6 +127,19 @@ public class TDGameTest {
     }
 
     @Test
+    void testToJsonBullets() {
+        game.addBullet(new Bullet(new Position(100, 100),
+                new Direction(5, 5), 0, 10));
+        game.addBullet(new Bullet(new Position(100, 100),
+                new Direction(5, 5), 0, 20));
+
+        JSONObject gameJson = game.toJson();
+        JSONArray bulletsJson = gameJson.getJSONArray("bullets");
+
+        assertEquals(2, bulletsJson.length());
+    }
+
+    @Test
     void testRemoveTowerExists() {
         game.placeTower(new GridPosition(1, 0));
         game.placeTower(new GridPosition(2, 0));
@@ -187,6 +202,66 @@ public class TDGameTest {
         assertEquals(0, game.getTowers().get(2).getLevel());
     }
 
+    @Test
+    void testCheckBulletCollisionNoBullets() {
+        assertEquals(0, game.getBullets().size());
+        game.checkBulletCollision();
+        assertEquals(0, game.getBullets().size());
+    }
+
+    @Test
+    void testCheckBulletCollisionNoBulletsColliding() {
+        for (int i = 0; i < 2 * (WaveManager.SECONDS_BETWEEN_WAVES * TDGame.TICKS_PER_SECOND); i++) {
+            game.getWaveManager().tick();
+        }
+
+        assertEquals(2, game.getWaveManager().getEnemies().size());
+
+        game.addBullet(new Bullet(new Position(100, 100),
+                new Direction(5, 5), 0, 10));
+        game.addBullet(new Bullet(new Position(100, 100),
+                new Direction(5, 5), 0, 10));
+
+        game.checkBulletCollision();
+        assertEquals(2, game.getBullets().size());
+    }
+
+    @Test
+    void testCheckBulletCollisionOneBulletColliding() {
+        for (int i = 0; i < 2 * (WaveManager.SECONDS_BETWEEN_WAVES * TDGame.TICKS_PER_SECOND); i++) {
+            game.getWaveManager().tick();
+        }
+
+        assertEquals(2, game.getWaveManager().getEnemies().size());
+
+        Position refEnemyPos = game.getWaveManager().getEnemies().get(0).getPosition();
+        game.addBullet(new Bullet(new Position(refEnemyPos.getPosX() + Enemy.RADIUS,
+                refEnemyPos.getPosY() + Enemy.RADIUS),
+                new Direction(5, 5), 0, 10));
+        game.addBullet(new Bullet(new Position(100, 100),
+                new Direction(5, 5), 0, 10));
+
+        game.checkBulletCollision();
+        assertEquals(1, game.getBullets().size());
+    }
+
+    @Test
+    void testCheckBulletCollisionBulletKillsEnemy() {
+        for (int i = 0; i < 2 * (WaveManager.SECONDS_BETWEEN_WAVES * TDGame.TICKS_PER_SECOND); i++) {
+            game.getWaveManager().tick();
+        }
+
+        assertEquals(2, game.getWaveManager().getEnemies().size());
+
+        Position refEnemyPos = game.getWaveManager().getEnemies().get(0).getPosition();
+        game.addBullet(new Bullet(new Position(refEnemyPos.getPosX() + Enemy.RADIUS,
+                refEnemyPos.getPosY() + Enemy.RADIUS),
+                new Direction(5, 5), 0, 200));
+
+        game.checkBulletCollision();
+        assertEquals(1, game.getWaveManager().getEnemies().size());
+
+    }
 
 
 

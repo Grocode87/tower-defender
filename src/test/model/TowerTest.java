@@ -118,4 +118,13 @@ public class TowerTest {
         testUpgradeAtLevelZero();
         assertEquals(Color.pink, t.getColor());
     }
+
+    @Test
+    void testSetLevel() {
+        assertEquals(0, t.getLevel());
+        t.setLevel(1);
+        assertEquals(1, t.getLevel());
+        t.setLevel(0);
+        assertEquals(0, t.getLevel());
+    }
 }
