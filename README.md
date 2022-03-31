@@ -42,3 +42,16 @@ similar.
 - As a user, I want to be able to click on the map to place a tower if I have enough money to buy the tower
 - As a user, I want to be able to right click a tower to remove it and get refunded
 - As a user, I want to be able to middle click on a tower to upgrade it - if I have enough money
+
+
+### Phase 4: Task 2
+Thu Mar 31 09:12:56 PDT 2022
+Tower added at (X:2, Y:3)
+Thu Mar 31 09:12:57 PDT 2022
+Tower added at (X:4, Y:6)
+Thu Mar 31 09:12:58 PDT 2022
+Tower added at (X:8, Y:4)
+Thu Mar 31 09:12:59 PDT 2022
+Tower removed at (X:2, Y:3)
+Thu Mar 31 09:13:00 PDT 2022
+Tower added at (X:5, Y:2)

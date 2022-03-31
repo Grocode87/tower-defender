@@ -1,9 +1,32 @@
 {
     "waveManager": {
         "numEnemiesToSpawn": 0,
-        "timePassed": 236,
-        "enemies": [],
-        "currWave": 0
+        "timePassed": 0,
+        "enemies": [
+            {
+                "facingDirection": "DOWN",
+                "color": "java.awt.Color[r=255,g=255,b=0]",
+                "pos": {
+                    "posX": 48,
+                    "posY": 190
+                },
+                "name": "BAD GUY",
+                "health": 100,
+                "speed": 2
+            },
+            {
+                "facingDirection": "DOWN",
+                "color": "java.awt.Color[r=255,g=255,b=0]",
+                "pos": {
+                    "posX": 48,
+                    "posY": 108
+                },
+                "name": "BAD GUY",
+                "health": 100,
+                "speed": 2
+            }
+        ],
+        "currWave": 1
     },
     "money": 30,
     "towers": [
@@ -12,26 +35,26 @@
             "level": 0,
             "ticksSinceFired": 60,
             "gridPos": {
-                "gridX": 2,
-                "gridY": 3
-            }
-        },
-        {
-            "color": "java.awt.Color[r=0,g=0,b=255]",
-            "level": 0,
-            "ticksSinceFired": 60,
-            "gridPos": {
-                "gridX": 4,
-                "gridY": 5
-            }
-        },
-        {
-            "color": "java.awt.Color[r=0,g=0,b=255]",
-            "level": 0,
-            "ticksSinceFired": 60,
-            "gridPos": {
                 "gridX": 4,
                 "gridY": 6
+            }
+        },
+        {
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 60,
+            "gridPos": {
+                "gridX": 8,
+                "gridY": 4
+            }
+        },
+        {
+            "color": "java.awt.Color[r=0,g=0,b=255]",
+            "level": 0,
+            "ticksSinceFired": 60,
+            "gridPos": {
+                "gridX": 4,
+                "gridY": 2
             }
         }
     ],

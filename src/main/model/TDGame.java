@@ -75,6 +75,10 @@ public class TDGame implements Saveable {
             if (Tower.COST <= money) {
                 this.towers.add(new Tower(gridPosition, this));
                 this.money -= Tower.COST;
+
+                EventLog.getInstance().logEvent(new Event("Tower added at (X:"
+                        + gridPosition.getGridX() + ", Y:"
+                        + gridPosition.getGridY() + ")"));
             }
         }
     }
@@ -89,6 +93,10 @@ public class TDGame implements Saveable {
             if (t.getGridPosition().getGridX() == gridPosition.getGridX()
                     && t.getGridPosition().getGridY() == gridPosition.getGridY()) {
                 towerIter.remove();
+
+                EventLog.getInstance().logEvent(new Event("Tower removed at (X:"
+                        + t.getGridPosition().getGridX() + ", Y:"
+                        + t.getGridPosition().getGridY() + ")"));
                 this.money += Tower.COST;
             }
         }
@@ -104,6 +112,8 @@ public class TDGame implements Saveable {
                 if (money >= Tower.UPGRADE_COST) {
                     this.money -= Tower.UPGRADE_COST;
                     t.upgrade();
+
+
                 }
             }
         }

@@ -1,6 +1,7 @@
 package ui;
 
 import model.*;
+import model.Event;
 import model.grid.Grid;
 import model.grid.GridCell;
 import model.position.GridPosition;
@@ -13,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 public class SwingGame extends JPanel implements KeyListener, MouseListener, ActionListener, WindowListener {
     private TDGame game;
@@ -125,6 +127,12 @@ public class SwingGame extends JPanel implements KeyListener, MouseListener, Act
                 GridCell.WIDTH, GridCell.HEIGHT);
     }
 
+    private void printLogs() {
+        for (Event e : EventLog.getInstance()) {
+            System.out.println(e);
+        }
+
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -172,6 +180,7 @@ public class SwingGame extends JPanel implements KeyListener, MouseListener, Act
     public void keyTyped(KeyEvent e) {
 
     }
+
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -232,8 +241,12 @@ public class SwingGame extends JPanel implements KeyListener, MouseListener, Act
                 promptButtons,promptButtons[1]);
         if (promptResult == 0) {
             saveGame();
+            printLogs();
+
             System.exit(0);
         } else {
+            printLogs();
+
             System.exit(0);
         }
     }
