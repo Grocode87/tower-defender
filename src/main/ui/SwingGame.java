@@ -20,8 +20,6 @@ public class SwingGame extends JPanel implements KeyListener, MouseListener, Act
     private TDGame game;
     private Timer timer;
 
-    private GridPosition cursor = new GridPosition(0, 0);
-
 
     private JsonReader jsonReader = new JsonReader();
     private JsonWriter jsonWriter = new JsonWriter();

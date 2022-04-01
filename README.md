@@ -55,3 +55,40 @@ Thu Mar 31 09:12:59 PDT 2022
 Tower removed at (X:2, Y:3)
 Thu Mar 31 09:13:00 PDT 2022
 Tower added at (X:5, Y:2)
+
+
+### Phase 4: Task 3
+
+After drawing the UML class design diagram, I noticed 2 major issues with my current design that make the entire diagram
+more complex than it needs to be.
+
+After just drawing class relationships, the design seems fairly good. However, after adding the dependencies,
+it is clear that my program suffers with low cohesion.
+
+- Saveable and JsonReader/JsonWriter: Since many of the classes in the model interface Saveable, this creates many 
+    interface relationships. And since the JsonReader and JsonWriter depend on all of the Saveable classes, it creates
+    many dependencies. The way to fix this would have been to do more with the Saveable interface. If it where an 
+    abstract class that had functions for saving and loading, the JsonReader and JsonWriter classes would have
+    only needed to deal with the Saveable class
+
+
+- SwingGame: SwingGame is responsible for rendering everything onto the screen. However, since every type of drawn
+    has very slight differences in the way it is rendered, SwingGame depends on every class it has to render and
+    needs to do a lot of different things, creating low cohesion. The fix for this is simple, since all of the drawing
+    has quite similar behavior, creating a Sprite class that every drawn object extends would have meant that every
+    type of rendered class (Tower, Enemy, etc), could extend that class and implement its own functionality. Then
+    SwingGame would only have to deal with 1 class - the Sprite class
+
+
+  - TDGame: This class ended up doing much more than I initially wanted it to, meaning it has low cohesion. A fix for this
+      would be to seperate some of its functionality (i.e, placing/removing/upgrading towers and handling enemy/bullet
+      collision) into seperate helper functions or abstracting them into other classes.
+  
+
+- Finally, with the current implementation, it is not very possible to add different types of towers or enemies.
+    The fix for this would be add abstract classes for each, and then create specilized tower and enemy classes
+    that extend the base functionality.
+
+
+Just the 4 fixes above would fix most of the cohesion and coupling issues that the current program faces.
+
