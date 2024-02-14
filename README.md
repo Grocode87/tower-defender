@@ -1,6 +1,9 @@
 # My Personal Project
 ## Tower Defense Game (TDGame)
 
+
+This project and the below writeup was created for the CPSC210 course at UBC.
+
 ### Overview
 This application is a tower defense game. There is a path across the screen that
 enemies make their way towards the end of. If the enemy makes it to the end, the
