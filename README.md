@@ -2,6 +2,8 @@
 ## Tower Defense Game (TDGame)
 
 
+![Gameplay screenshot](./screenshot.png)
+
 This project and the below writeup was created for the CPSC210 course at UBC.
 
 ### Overview
